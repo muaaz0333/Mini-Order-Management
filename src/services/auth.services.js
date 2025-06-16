@@ -6,10 +6,15 @@ const bcrypt = require("bcrypt");
 
 exports.register = async (input) => {
     const hashed = await bcrypt.hash(input.password, 10);
+    const existingUser = await User.findOne();
+    if (existingUser) {
+        throw new Error("User with this email already exists :( 💔")
+    }
 
     const user = new User({
         name: input.name,
         email: input.email,
+        role: input.role,
         password: hashed
     });
 
