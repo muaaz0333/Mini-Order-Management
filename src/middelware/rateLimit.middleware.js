@@ -8,7 +8,7 @@ const authLimiter = rateLimit({
 
 const productRateLimiter = rateLimit({
     windowMs: 30 * 1000,
-    max: 100,
+    max: 20,
     message: "Too many requests. Please try again later."
 });
 
