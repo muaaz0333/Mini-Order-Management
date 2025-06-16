@@ -26,10 +26,25 @@ exports.delete = async (id) => {
 }
 
 exports.list = async (page = 1, limit = 10, category) => {
-    const filter = category ? { category } : {};
+    const filter = {};
 
-    return Product.find(filter)
+    if (category) {
+        filter.category = category;
+    }
+
+    const products = await Product.find(filter)
         .skip((page - 1) * limit)
         .limit(Number(limit));
-}
 
+    const total = await Product.countDocuments(filter);
+
+    return {
+        products,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        },
+    };
+}
