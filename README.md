@@ -78,6 +78,8 @@ It allows authentication, authorization, product management, and order placement
  └ services/
  └ app.js/
 server.js
+/tests
+ └ app.test.js
 ```
 
 ---
