@@ -4,7 +4,6 @@ const productService = require("../services/product.service");
 
 const create = async (req, res) => {
     try {
-        // products should be array of { productId, quantity }
         const products = req.body.products;
 
         if (!products || products.length === 0) {
@@ -13,7 +12,6 @@ const create = async (req, res) => {
 
         let total = 0;
 
-        // Prepare products array for order
         const productsToSave = [];
 
         for (const item of products) {
@@ -28,13 +26,12 @@ const create = async (req, res) => {
         const order = await orderService.create(req.user._id, productsToSave, total);
         res.status(201).json({ order });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
 const list = async (req, res) => {
     try {
-        // If you’re an admin, you see all orders; otherwise, just your own
         let filter = {};
         if (req.user.role !== "admin") {
             filter.user = req.user._id;
@@ -42,7 +39,7 @@ const list = async (req, res) => {
         const orders = await orderService.findAll(filter);
         res.json({ orders });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -61,17 +58,16 @@ const update = async (req, res) => {
         const updated = await orderService.updateStatus(id, status);
         res.json({ updated });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
 const history = async (req, res) => {
     try {
-        // User can view their own order history
         const orders = await orderService.findUserOrders(req.user._id);
         res.json({ orders });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
