@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 
 exports.register = async (input) => {
     const hashed = await bcrypt.hash(input.password, 10);
-    const existingUser = await User.findOne();
+    const existingUser = await User.findOne({email: input.email});
     if (existingUser) {
         throw new Error("User with this email already exists :( 💔")
     }
